@@ -1,6 +1,6 @@
 import { Box, Button, Container, Grid } from "@mui/material";
 import EntryInput from "../../EntryInput";
-import TeamMembersComponent from "../../team-members/TeamMembersComponent";
+import TeamMembersComponent from "./team-members/TeamMembersComponent";
 
 const sxButton = {
   backgroundColor: "lightblue",

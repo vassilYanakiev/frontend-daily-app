@@ -1,6 +1,7 @@
+import { Button, Box } from "@mui/material";
 import { useEffect, useState, useReducer } from "react";
 import TeamMemberCardComponent from "./TeamMemberCardComponent";
-import { reducer, initialState } from "../../reducer";
+import { reducer, initialState } from "../../../../reducer";
 
 const TeamMembersComponent = () => {
   const [{ participants }, dispatch] = useReducer(reducer, initialState);
@@ -32,12 +33,31 @@ const TeamMembersComponent = () => {
   if (!participants.length) return <div>Loading participants list...</div>;
 
   return (
-    <div className="team-members">
-      <h2>Daily Standup Board</h2>
+    <div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <h2>Team Members</h2>
+        <Button
+          sx={{
+            border: "2px solid",
+            color: "black",
+            height: "32px",
+            marginTop: "16px",
+            marginRight: "8px",
+          }}
+        >
+          Next
+        </Button>
+      </Box>
       {loading ? (
         <div className="loading">Loading...</div>
       ) : (
-        <div className="team-members-list">
+        <div>
           {participants.map((teamMember) => (
             <TeamMemberCardComponent
               key={teamMember.id}

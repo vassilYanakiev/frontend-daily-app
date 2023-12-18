@@ -22,7 +22,7 @@ FE:
 
 отдясно също и таймера
 
-
+https://stylexjs.com/docs/learn/
 
 # React + TypeScript + Vite
 
