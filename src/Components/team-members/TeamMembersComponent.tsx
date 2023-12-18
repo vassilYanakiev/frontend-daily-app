@@ -1,15 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import TeamMemberCardComponent from "./TeamMemberCardComponent";
-
-export interface TeamMember {
-  id: number;
-  name: string;
-  role: string;
-  image: string;
-}
+import { reducer, initialState } from "../../reducer";
 
 const TeamMembersComponent = () => {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [{ participants }, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorFetching, setErrorFetching] = useState(false);
 
@@ -21,8 +15,11 @@ const TeamMembersComponent = () => {
         }
         return resp.json();
       })
-      .then((teamMembers) => {
-        setTeamMembers(teamMembers);
+      .then((payload) => {
+        dispatch({
+          type: "FETCH_PARTICIPANTS",
+          payload,
+        });
         setLoading(false);
       })
       .catch((error) => {
@@ -32,15 +29,16 @@ const TeamMembersComponent = () => {
   }, []);
 
   if (errorFetching) throw new Error("Error fetching team members");
+  if (!participants.length) return <div>Loading participants list...</div>;
 
   return (
     <div className="team-members">
-      <h1>Team Members</h1>
+      <h2>Daily Standup Board</h2>
       {loading ? (
         <div className="loading">Loading...</div>
       ) : (
         <div className="team-members-list">
-          {teamMembers.map((teamMember) => (
+          {participants.map((teamMember) => (
             <TeamMemberCardComponent
               key={teamMember.id}
               teamMember={teamMember}

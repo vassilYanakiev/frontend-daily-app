@@ -1,4 +1,11 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Avatar,
+  IconButton,
+} from "@mui/material";
 import HeaderButton from "./HeaderButton";
 
 const Header = (): JSX.Element => {
@@ -9,9 +16,16 @@ const Header = (): JSX.Element => {
     >
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <HeaderButton text={"Daily shuffle"} />
+          <HeaderButton text={"Daily Standup"} />
           <HeaderButton text={"Daily stats"} />
+          <HeaderButton text={"Teams"} />
+          <HeaderButton text={"Memebers"} />
         </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <IconButton>
+            <Avatar sx={{ bgcolor: "lightblue" }}>U</Avatar>
+          </IconButton>
+        </Box>
       </Toolbar>
     </AppBar>
   );

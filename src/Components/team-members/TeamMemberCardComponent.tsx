@@ -32,7 +32,7 @@ const TeamMemberCardComponent = (props: TeamMemberCardComponentProps) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small">Active ticket</Button>
       </CardActions>
     </Card>
   );
