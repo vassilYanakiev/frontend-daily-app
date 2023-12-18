@@ -28,5 +28,11 @@
     "name": "Charlie",
     "surname": "Brown",
     "role": "UI/UX Designer"
+  },
+  {
+    "id": 6,
+    "name": "Charlie",
+    "surname": "Brown",
+    "role": "UI/UX Designer"
   }
 ]

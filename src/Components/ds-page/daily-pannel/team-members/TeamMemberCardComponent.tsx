@@ -21,7 +21,7 @@ const TeamMemberCardComponent = (props: TeamMemberCardComponentProps) => {
         // className={classes.media}
         title={props.teamMember.name + " " + id}
       />
-      <CardContent>
+      <CardContent sx={{ backgroundColor: "#bdd5e7" }}>
         <Typography gutterBottom variant="h5" component="div">
           {`${name} ${surname}`}
         </Typography>

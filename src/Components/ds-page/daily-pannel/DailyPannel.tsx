@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid } from "@mui/material";
+import { AppBar, Box, Button, Container, Grid } from "@mui/material";
 import EntryInput from "../../EntryInput";
 import TeamMembersComponent from "./team-members/TeamMembersComponent";
 
@@ -10,6 +10,13 @@ const sxButton = {
     color: "white",
   },
 };
+interface TeamMember {
+  name: string;
+  surname: string;
+  role: string;
+  availability: string;
+  assignedJiraCard: string;
+}
 
 const DailyPannel = () => {
   return (
@@ -19,25 +26,33 @@ const DailyPannel = () => {
         direction="column"
         justifyContent="space-between"
         style={{
-          minHeight: "80vh",
           backgroundColor: "#409f99",
           border: "2px solid #4d779e",
-          borderRadius: "10px",
+          borderRadius: "14px 0px 0px 14px",
+          overflow: "auto",
         }}
       >
-        <Grid item sx={{ backgroundColor: "#409f99" }}>
+        <Grid
+          item
+          sx={{
+            backgroundColor: "#409f99",
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+          }}
+        >
           <TeamMembersComponent />
         </Grid>
-        <Grid item sx={{ backgroundColor: "#88a9a7" }}>
+        {/* <Grid item sx={{ backgroundColor: "#88a9a7" }}>
           <EntryInput entryLabel="Add participant" />
-        </Grid>
-        <Grid item>
+        </Grid> */}
+        {/* <Grid item>
           <Box sx={{ display: "flex", justifyContent: "center", p: 1, m: 1 }}>
             <Button variant="outlined" sx={sxButton} autoFocus>
               Shuffle
             </Button>
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Container>
   );
