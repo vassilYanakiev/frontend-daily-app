@@ -1,5 +1,7 @@
 import { Container, Box, Grid, Button, Input } from "@mui/material";
-import Header from "./Components/header";
+import Header from "./Components/header-component/Header";
+import TeamMembersComponent from "./Components/team-members/TeamMembersComponent";
+import EntryInput from "./Components/EntryInput";
 
 const sxButton = {
   backgroundColor: "lightblue",
@@ -12,25 +14,35 @@ const sxButton = {
 
 function App() {
   return (
-    <Container>
+    <Container sx={{ padding: "0px" }}>
       <Header />
-      <Box
-        component="section"
-        sx={{ p: 2, border: "1px dashed grey", minHeight: "800px" }}
-      >
+      <Container>
         <Grid
           container
-          spacing={2}
           direction="column"
-          alignItems="center"
-          justifyContent="flex-end"
+          justifyContent="space-between"
+          style={{
+            minHeight: "80vh",
+            backgroundColor: "#409f99",
+            border: "2px solid #4d779e",
+            borderRadius: "10px",
+          }}
         >
-          <Input />
-          <Button variant="outlined" sx={sxButton} autoFocus>
-            Shuffle
-          </Button>
+          <Grid item sx={{ backgroundColor: "#409f99" }}>
+            <TeamMembersComponent />
+          </Grid>
+          <Grid item sx={{ backgroundColor: "#88a9a7" }}>
+            <EntryInput entryLabel="Add participant" />
+          </Grid>
+          <Grid item>
+            <Box sx={{ display: "flex", justifyContent: "center", p: 1, m: 1 }}>
+              <Button variant="outlined" sx={sxButton} autoFocus>
+                Shuffle
+              </Button>
+            </Box>
+          </Grid>
         </Grid>
-      </Box>
+      </Container>
     </Container>
   );
 }
