@@ -23,10 +23,10 @@ function App() {
     >
       <Header />
       <Grid container xs={12} sx={{ height: "80%" }}>
-        <Grid xs={6} sx={{ height: "97%", overflow: "overlay" }}>
+        <Grid xs={5} sx={{ height: "97%", overflow: "overlay" }}>
           <DailyPannel />
         </Grid>
-        <Grid item xs={6} sx={{ height: "97%" }}>
+        <Grid item xs={7} sx={{ height: "97%" }}>
           <TeamMemberPannelComponent teamMember={teamMember} />
         </Grid>
       </Grid>
@@ -36,4 +36,3 @@ function App() {
 }
 
 export default App;
-98;

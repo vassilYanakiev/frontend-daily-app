@@ -6,7 +6,10 @@ import TeamMemberCardComponent from "./TeamMemberCardComponent";
 import { reducer, initialState } from "../../../../reducer";
 
 const TeamMembersComponent = () => {
-  const [{ participants }, dispatch] = useReducer(reducer, initialState);
+  const [{ participants, activeParticipant }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [errorFetching, setErrorFetching] = useState(false);
 
@@ -33,6 +36,30 @@ const TeamMembersComponent = () => {
         setErrorFetching(true);
       });
   }, []);
+
+  const handlePersonSelect = (direction: "previous" | "next") => () => {
+    const activeParticipantIndex = participants.findIndex(
+      (participant) => participant.id === activeParticipant
+    );
+
+    let newActiveParticipantIndex = 0;
+
+    if (direction === "previous") {
+      newActiveParticipantIndex = activeParticipantIndex
+        ? activeParticipantIndex - 1
+        : participants.length - 1;
+    } else {
+      newActiveParticipantIndex =
+        activeParticipantIndex === participants.length - 1 ||
+        activeParticipant === null
+          ? 0
+          : activeParticipantIndex + 1;
+    }
+    dispatch({
+      type: "SET_ACTIVE_PARTICIPANT",
+      payload: participants[newActiveParticipantIndex]?.id || null,
+    });
+  };
 
   if (errorFetching) throw new Error("Error fetching team members");
   if (!participants.length) return <div>Loading participants list...</div>;
@@ -65,6 +92,7 @@ const TeamMembersComponent = () => {
               marginTop: "16px",
               marginRight: "8px",
             }}
+            onClick={handlePersonSelect("previous")}
           >
             Previous
           </Button>
@@ -76,6 +104,7 @@ const TeamMembersComponent = () => {
               marginTop: "16px",
               marginRight: "8px",
             }}
+            onClick={handlePersonSelect("next")}
           >
             Next
           </Button>
@@ -89,6 +118,7 @@ const TeamMembersComponent = () => {
             <TeamMemberCardComponent
               key={teamMember.id}
               teamMember={teamMember}
+              selected={teamMember.id === activeParticipant}
             />
           ))}
         </div>

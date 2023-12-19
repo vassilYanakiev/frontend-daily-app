@@ -12,7 +12,11 @@ const Header = (): JSX.Element => {
   return (
     <AppBar
       position="sticky"
-      sx={{ borderRadius: "14px", marginBottom: "24px" }}
+      sx={{
+        borderRadius: "14px",
+        marginBottom: "24px",
+        backgroundColor: "#5794c2",
+      }}
     >
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
