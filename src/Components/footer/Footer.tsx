@@ -31,9 +31,9 @@ const Footer = () => {
         <Typography
           variant="h6"
           component="div"
-          sx={{ flexGrow: 1, color: "black" }}
+          sx={{ flexGrow: 1, textAlign: "right", color: "#4d779e" }}
         >
-          Timer: 60s...
+          Timer: 60 sec...
         </Typography>
       </Toolbar>
     </AppBar>

@@ -18,8 +18,7 @@ const Header = (): JSX.Element => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <HeaderButton text={"Daily Standup"} />
           <HeaderButton text={"Daily stats"} />
-          <HeaderButton text={"Teams"} />
-          <HeaderButton text={"Memebers"} />
+          <HeaderButton text={"Team"} />
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <IconButton>

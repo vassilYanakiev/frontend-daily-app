@@ -23,7 +23,7 @@ function App() {
     >
       <Header />
       <Grid container xs={12} sx={{ height: "80%" }}>
-        <Grid xs={6} sx={{ height: "97%", overflow: "auto" }}>
+        <Grid xs={6} sx={{ height: "97%", overflow: "overlay" }}>
           <DailyPannel />
         </Grid>
         <Grid item xs={6} sx={{ height: "97%" }}>

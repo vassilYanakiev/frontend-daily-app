@@ -32,15 +32,7 @@ const DailyPannel = () => {
           overflow: "auto",
         }}
       >
-        <Grid
-          item
-          sx={{
-            backgroundColor: "#409f99",
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-          }}
-        >
+        <Grid>
           <TeamMembersComponent />
         </Grid>
         {/* <Grid item sx={{ backgroundColor: "#88a9a7" }}>
