@@ -6,6 +6,7 @@ import {
   Avatar,
   IconButton,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import HeaderButton from "./HeaderButton";
 
 const Header = (): JSX.Element => {
@@ -20,9 +21,15 @@ const Header = (): JSX.Element => {
     >
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <HeaderButton text={"Daily Standup"} />
-          <HeaderButton text={"Daily stats"} />
-          <HeaderButton text={"Team"} />
+          <Link to="/">
+            <HeaderButton text={"Daily Standup"} />
+          </Link>
+          <Link to="/stats">
+            <HeaderButton text={"Daily stats"} />
+          </Link>
+          <Link to="/teams">
+            <HeaderButton text={"Team"} />
+          </Link>
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <IconButton>

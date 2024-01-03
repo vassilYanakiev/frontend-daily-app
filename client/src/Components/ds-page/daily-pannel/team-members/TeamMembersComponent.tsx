@@ -17,7 +17,7 @@ const TeamMembersComponent = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
-    fetch("src/data/team-members.json")
+    fetch("http://localhost:4001/api/v1/team-members?teamId=C")
       .then((resp) => {
         if (!resp.ok) {
           throw new Error("HTTP error " + resp.status);
