@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Card,
   CardContent,
@@ -10,6 +10,8 @@ import {
   TextField,
   DialogActions,
 } from "@mui/material";
+import SuccessDialog from "./SuccessDialog";
+import { ParticipantsContext } from "../../context-Participants";
 
 interface Team {
   id: string;
@@ -17,8 +19,10 @@ interface Team {
 }
 
 const TeamsComponent = () => {
+  const { dispatch } = useContext(ParticipantsContext);
   const [teams, setTeams] = useState<Team[]>([]);
   const [open, setOpen] = useState(false);
+  const [openMessage, setOpenMessage] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -31,6 +35,10 @@ const TeamsComponent = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseMessage = () => {
+    setOpenMessage(false);
   };
 
   const handleSubmit = async () => {
@@ -49,8 +57,11 @@ const TeamsComponent = () => {
 
     if (!response.ok) {
       alert("Failed to add team member");
+    } else {
+      setOpen(false);
+      setOpenMessage(true);
+      dispatch({ type: "INVALIDATE_CACHE", payload: true });
     }
-    setOpen(false);
   };
 
   useEffect(() => {
@@ -145,6 +156,11 @@ const TeamsComponent = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <SuccessDialog
+        openMessage={openMessage}
+        handleCloseMessage={handleCloseMessage}
+        message={`${name} Added Successfully to Team ${selectedTeam?.team_name}`}
+      />
     </div>
   );
 };

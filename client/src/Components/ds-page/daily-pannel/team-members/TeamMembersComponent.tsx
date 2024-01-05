@@ -1,45 +1,86 @@
-import { Button, Box } from "@mui/material";
+import { Button, Box, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState, useContext } from "react";
 import TeamMemberCardComponent from "./TeamMemberCardComponent";
-import { reducer, initialState } from "../../../../reducer";
+import { ParticipantsContext } from "../../../../context-Participants";
+
+const sxButton = {
+  backgroundColor: "lightblue",
+  border: "2px solid #4d779e",
+  "&:hover": {
+    backgroundColor: "#636396",
+    color: "white",
+  },
+  height: "42px",
+  margin: "12px 16px 0px 0px",
+};
 
 const TeamMembersComponent = () => {
-  const [{ participants, activeParticipant }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
-  const [loading, setLoading] = useState<boolean>(true);
-  const [errorFetching, setErrorFetching] = useState(false);
+  const {
+    state: { participants, activeParticipant, invalidateCache, timerStarted },
+    dispatch,
+  } = useContext(ParticipantsContext);
 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorFetching, setErrorFetching] = useState(false);
+  const [teamMembersKey, setTeamMembersKey] = useState(0);
+
+  const handleShuffle = () => {
+    setTeamMembersKey(teamMembersKey + 1);
+  };
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
-    fetch("http://localhost:4001/api/v1/team-members?teamId=C")
-      .then((resp) => {
-        if (!resp.ok) {
-          throw new Error("HTTP error " + resp.status);
-        }
-        return resp.json();
-      })
-      .then((payload) => {
-        dispatch({
-          type: "FETCH_PARTICIPANTS",
-          payload,
+    console.log("useEffect, []");
+    const fetchParticipants = async function () {
+      await fetch("http://localhost:4001/api/v1/team-members?teamId=C")
+        .then((resp) => {
+          if (!resp.ok) {
+            throw new Error("HTTP error " + resp.status);
+          }
+          return resp.json();
+        })
+        .then((payload) => {
+          dispatch({
+            type: "FETCH_PARTICIPANTS",
+            payload,
+          });
+          setLoading(false);
         });
-        setLoading(false);
-      })
-      .catch((error) => {
+    };
+
+    if (!participants.length || invalidateCache) {
+      setLoading(true);
+      try {
+        fetchParticipants();
+      } catch (error) {
         console.log(error);
         setErrorFetching(true);
-      });
-  }, []);
+      } finally {
+        dispatch({ type: "INVALIDATE_CACHE", payload: false });
+      }
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!participants.length || teamMembersKey === 0) return;
+    dispatch({
+      type: "REORDER_PARTICIPANTS",
+    });
+  }, [teamMembersKey, participants]);
+
+  const handleStart = () => {
+    dispatch({
+      type: "SET_ACTIVE_PARTICIPANT",
+      payload: participants[0] || null,
+    });
+  };
 
   const handlePersonSelect = (direction: "previous" | "next") => () => {
     const activeParticipantIndex = participants.findIndex(
-      (participant) => participant.id === activeParticipant
+      (participant) => participant.id === activeParticipant?.id
     );
 
     let newActiveParticipantIndex = 0;
@@ -57,7 +98,7 @@ const TeamMembersComponent = () => {
     }
     dispatch({
       type: "SET_ACTIVE_PARTICIPANT",
-      payload: participants[newActiveParticipantIndex]?.id || null,
+      payload: participants[newActiveParticipantIndex] || null,
     });
   };
 
@@ -69,27 +110,51 @@ const TeamMembersComponent = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          position: "sticky",
-          top: 0,
-          zIndex: 1,
+          flexDirection: "column",
+          padding: "8px",
         }}
       >
-        <h2>Team Members</h2>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <h2>Team Members</h2>
+          <Button
+            variant="outlined"
+            sx={sxButton}
+            autoFocus
+            onClick={handleShuffle}
+          >
+            Shuffle
+          </Button>
+        </Box>
         <Box
           sx={{
             display: "flex",
             flexDirection: isSmallScreen ? "column" : "row",
-            justifyContent: "flex-end",
+            justifyContent: "center",
           }}
         >
           <Button
+            disabled={timerStarted}
             sx={{
-              border: "2px solid",
-              color: "black",
+              border: "3px solid #4d779e",
+              color: "white",
               height: "32px",
-              marginTop: "16px",
+              marginRight: "8px",
+            }}
+            onClick={handleStart}
+          >
+            First
+          </Button>
+          <Button
+            sx={{
+              border: "3px solid #4d779e",
+              color: "white",
+              height: "32px",
               marginRight: "8px",
             }}
             onClick={handlePersonSelect("previous")}
@@ -98,11 +163,9 @@ const TeamMembersComponent = () => {
           </Button>
           <Button
             sx={{
-              border: "2px solid",
-              color: "black",
+              border: "3px solid #4d779e",
+              color: "white",
               height: "32px",
-              marginTop: "16px",
-              marginRight: "8px",
             }}
             onClick={handlePersonSelect("next")}
           >
@@ -110,6 +173,7 @@ const TeamMembersComponent = () => {
           </Button>
         </Box>
       </Box>
+
       {loading ? (
         <div className="loading">Loading...</div>
       ) : (
@@ -118,7 +182,7 @@ const TeamMembersComponent = () => {
             <TeamMemberCardComponent
               key={teamMember.id}
               teamMember={teamMember}
-              selected={teamMember.id === activeParticipant}
+              selected={teamMember.id === activeParticipant?.id}
             />
           ))}
         </div>

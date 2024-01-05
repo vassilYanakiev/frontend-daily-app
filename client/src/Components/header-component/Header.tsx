@@ -17,6 +17,7 @@ const Header = (): JSX.Element => {
         borderRadius: "14px",
         marginBottom: "24px",
         backgroundColor: "#5794c2",
+        border: "2px solid #4d779e",
       }}
     >
       <Toolbar>

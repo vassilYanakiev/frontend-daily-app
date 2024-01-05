@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { ParticipantsContext } from "../../../context-Participants";
 import {
   Box,
   Button,
@@ -22,16 +24,26 @@ interface TeamMemberPanelProps {
 }
 
 const TeamMemberPanel: React.FC<TeamMemberPanelProps> = ({ teamMember }) => {
+  const {
+    state: { activeParticipant, timerStarted },
+  } = useContext(ParticipantsContext);
+
   return (
     <>
-      <Card>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Card sx={{ margin: "0px 24px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            backgroundColor: "#b2b2cd",
+          }}
+        >
           <CardContent>
             <Typography variant="h5" component="div">
-              {teamMember.name} {teamMember.surname}
+              {activeParticipant?.name} {activeParticipant?.surname}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Role: {teamMember.role}
+              Role:
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Availability: {teamMember.availability}
@@ -49,24 +61,31 @@ const TeamMemberPanel: React.FC<TeamMemberPanelProps> = ({ teamMember }) => {
             }}
           >
             <CountdownCircleTimer
-              key={teamMember.id}
-              size={120}
-              isPlaying
+              key={activeParticipant?.id}
+              size={140}
+              isPlaying={timerStarted}
               duration={120}
               colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-              colorsTime={[120, 30, 2, 0]}
+              colorsTime={[60, 30, 2, 0]}
             >
               {({ remainingTime }) => remainingTime}
             </CountdownCircleTimer>
           </Box>
         </Box>
       </Card>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          paddingTop: "64px",
+          marginBottom: "-32px",
+        }}
+      >
         <h3>Active Tickets:</h3>
       </div>
       <Card
         sx={{
-          minHeight: 250,
+          minHeight: 180,
           margin: 4,
           backgroundColor: "#b2b2cd",
           justifyContent: "space-evenly",

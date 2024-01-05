@@ -1,39 +1,52 @@
+import { useContext, useState, useEffect } from "react";
+import { ParticipantsContext } from "../../context-Participants";
 import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 
-interface FooterProps {
-  timer: string;
-  onStart: () => void;
-  onPause: () => void;
-}
-
 const Footer = () => {
-  const handleStart = () => {
-    console.log("Start");
+  const {
+    state: { timerStarted },
+    dispatch,
+  } = useContext(ParticipantsContext);
+  const [timer, setTimer] = useState(0);
+
+  const toggleStart = () => {
+    dispatch({ type: "SET_TIMER_STARTED", payload: !timerStarted });
   };
 
-  const handlePause = () => {
-    console.log("Pause");
-  };
+  useEffect(() => {
+    if (timerStarted) {
+      const interval = setInterval(() => {
+        setTimer((timer) => timer + 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [timerStarted]);
 
   return (
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "#e2f3f9",
+        backgroundColor: "#c2cbcf",
         borderRadius: "14px 14px 0 0",
-        width: "90%",
+        width: "98vw",
         position: "fixed",
       }}
     >
       <Toolbar>
-        <Button onClick={handleStart}>Start</Button>
-        <Button onClick={handlePause}>Pause</Button>
+        <Button onClick={toggleStart} disabled={timerStarted}>
+          Start
+        </Button>
+        <Button onClick={toggleStart} disabled={!timerStarted}>
+          Pause
+        </Button>
         <Typography
           variant="h6"
           component="div"
           sx={{ flexGrow: 1, textAlign: "right", color: "#4d779e" }}
         >
-          Timer: 60 sec...
+          {`Timer elapsed: ${Math.floor(timer / 60)} minutes ${
+            timer % 60
+          } seconds`}
         </Typography>
       </Toolbar>
     </AppBar>

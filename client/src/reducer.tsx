@@ -1,6 +1,7 @@
 export interface TeamMember {
   id: string;
   name: string;
+  surname: string;
   role: string;
   image: string;
 }
@@ -13,12 +14,25 @@ export type ACTIONTYPE =
     }
   | {
       type: "SET_ACTIVE_PARTICIPANT";
-      payload: TeamMember["id"] | null;
+      payload: TeamMember | null;
+    }
+  | {
+      type: "REORDER_PARTICIPANTS";
+    }
+  | {
+      type: "INVALIDATE_CACHE";
+      payload: boolean;
+    }
+  | {
+      type: "SET_TIMER_STARTED";
+      payload: boolean;
     };
 
 export const initialState = {
   participants: [] as TeamMember[],
-  activeParticipant: null as TeamMember["id"] | null,
+  activeParticipant: null as TeamMember | null,
+  invalidateCache: false,
+  timerStarted: false,
 };
 
 type State = typeof initialState;
@@ -34,6 +48,27 @@ export const reducer = (state: State, action: ACTIONTYPE): State => {
       return {
         ...state,
         activeParticipant: action.payload,
+      };
+    }
+
+    case "REORDER_PARTICIPANTS": {
+      return {
+        ...state,
+        participants: state.participants.sort(() => Math.random() - 0.5),
+      };
+    }
+
+    case "INVALIDATE_CACHE": {
+      return {
+        ...state,
+        invalidateCache: action.payload,
+      };
+    }
+
+    case "SET_TIMER_STARTED": {
+      return {
+        ...state,
+        timerStarted: action.payload,
       };
     }
 
